@@ -49,7 +49,7 @@ fun SplashScreen(navController: NavController) {
             Constant.token = getToken.value.toString()
             when (getState.value) {
                 "client" -> {
-                    navController.navigate(AllScreens.ClientHomeScreen.name + "/login") {
+                    navController.navigate(AllScreens.ClientHomeScreen.name + "/{}") {
                         navController.popBackStack()
                     }
                 }

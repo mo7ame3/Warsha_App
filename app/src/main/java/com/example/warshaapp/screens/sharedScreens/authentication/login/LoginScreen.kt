@@ -180,7 +180,7 @@ fun LoginForm(
                             when (login.data!!.data?.user?.role) {
                                 "client" -> {
                                     sharedPreference.saveState("client")
-                                    navController.navigate(AllScreens.ClientHomeScreen.name + "/login") {
+                                    navController.navigate(AllScreens.ClientHomeScreen.name + "/{}") {
                                         navController.popBackStack()
                                     }
                                 }
@@ -257,7 +257,7 @@ fun LoginForm(
                         when (login.data!!.data?.user?.role) {
                             "client" -> {
                                 sharedPreference.saveState("client")
-                                navController.navigate(AllScreens.ClientHomeScreen.name + "/login") {
+                                navController.navigate(AllScreens.ClientHomeScreen.name + "/{}") {
                                     navController.popBackStack()
                                 }
                             }

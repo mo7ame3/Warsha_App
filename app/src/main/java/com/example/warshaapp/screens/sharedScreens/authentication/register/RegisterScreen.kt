@@ -30,7 +30,7 @@ import com.example.warshaapp.constant.Constant
 import com.example.warshaapp.data.WrapperClass
 import com.example.warshaapp.model.shared.authentication.Authentication
 import com.example.warshaapp.model.shared.authentication.AuthenticationCraft
-import com.example.warshaapp.model.shared.authentication.Craft
+import com.example.warshaapp.model.shared.craft.Craft
 import com.example.warshaapp.navigation.AllScreens
 import com.example.warshaapp.screens.sharedScreens.authentication.login.AuthenticationViewModel
 import com.example.warshaapp.sharedpreference.SharedPreference
@@ -206,7 +206,7 @@ fun RegisterForm(
                                     register.data!!.token.toString()
                                 if (role.value == "عميل") {
                                     sharedPreference.saveState("client")
-                                    navController.navigate(AllScreens.ClientHomeScreen.name + "/login") {
+                                    navController.navigate(AllScreens.ClientHomeScreen.name + "/{}") {
                                         navController.popBackStack()
                                     }
                                 } else {
@@ -276,7 +276,7 @@ fun RegisterForm(
                                 register.data!!.token.toString()
                             if (role.value == "عميل") {
                                 sharedPreference.saveState("client")
-                                navController.navigate(AllScreens.ClientHomeScreen.name + "/login") {
+                                navController.navigate(AllScreens.ClientHomeScreen.name + "/{}") {
                                     navController.popBackStack()
                                 }
                             } else {

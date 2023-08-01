@@ -32,7 +32,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.warshaapp.R
-import com.example.warshaapp.model.shared.authentication.Craft
+import com.example.warshaapp.model.shared.craft.Craft
 import com.example.warshaapp.ui.theme.MainColor
 import com.example.warshaapp.ui.theme.SecondaryColor
 
@@ -59,19 +59,27 @@ fun TextInput(
         label = { Text(text = label) },
         value = input.value,
         onValueChange = {
-            if (label == "البريد الالكتروني") {
-                val emailRegex = "^[A-Za-z](.*)(@)(.+)(\\.)(.+)"
-                input.value = it
-                isError?.value = !emailRegex.toRegex().matches(it)
-            } else if (label == "الاسم") {
-                val nameRegex = "^[a-zA-Zأ-ي]+(([',. -][a-zA-Zأ-ي])?[a-zA-Zأ-ي]*)*$"
-                input.value = it
-                isError?.value = !nameRegex.toRegex().matches(it)
+            when (label) {
+                "البريد الالكتروني" -> {
+                    val emailRegex = "^[A-Za-z](.*)(@)(.+)(\\.)(.+)"
+                    input.value = it
+                    isError?.value = !emailRegex.toRegex().matches(it)
+                }
+
+                "الاسم" -> {
+                    val nameRegex = "^[a-zA-Zأ-ي]+(([',. -][a-zA-Zأ-ي])?[a-zA-Zأ-ي]*)*$"
+                    input.value = it
+                    isError?.value = !nameRegex.toRegex().matches(it)
+                }
+
+                else -> {
+                    input.value = it
+                }
             }
         },
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         keyboardActions = onAction,
-        colors = if (label == "البريد الالكتروني") {
+        colors = if (label == "البريد الالكتروني" || label == "عنوان المشروع" || label == "نوع المشكلة") {
             TextFieldDefaults.outlinedTextFieldColors(
                 containerColor = if (!isNotBackground) {
                     SecondaryColor.copy(
@@ -102,7 +110,7 @@ fun TextInput(
                 Icon(imageVector = leadingImageVector, contentDescription = null, tint = MainColor)
             }
         },
-        isError = isError!!.value,
+        isError = isError?.value ?: false,
     )
 }
 
@@ -116,7 +124,6 @@ fun DropInput(
     readOnly: Boolean = false,
     label: String,
     isNotBackground: Boolean = false,
-    isBorder: Boolean = true,
     isSingleLine: Boolean = true
 ) {
     OutlinedTextField(
@@ -136,14 +143,6 @@ fun DropInput(
                     alpha = 0.2f
                 )
             } else Color.White,
-            disabledBorderColor = Color.Transparent,
-            focusedBorderColor = if (isBorder) {
-                if (isNotBackground) Color.Transparent else MainColor
-            } else Color.White,
-            unfocusedBorderColor = if (isBorder) {
-                if (isNotBackground) Color.Transparent else MainColor
-            } else
-                Color.White
         ),
         trailingIcon = {
             ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded.value)
