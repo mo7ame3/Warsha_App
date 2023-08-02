@@ -2,17 +2,24 @@ package com.example.warshaapp.network
 
 import com.example.warshaapp.constant.Constant
 import com.example.warshaapp.model.client.createOrder.CreateOrder
+import com.example.warshaapp.model.client.getMyOrder.GetMyOrder
+import com.example.warshaapp.model.client.offerOfAnOrder.GetOfferOfAnOrder
+import com.example.warshaapp.model.client.updateOrder.UpdateOrder
 import com.example.warshaapp.model.shared.authentication.Authentication
 import com.example.warshaapp.model.shared.authentication.AuthenticationCraft
 import com.example.warshaapp.model.shared.authentication.AuthenticationCraftList
+import com.example.warshaapp.model.shared.delete.Delete
 import com.example.warshaapp.model.shared.getAllCrafts.GetAllCrafts
 import com.example.warshaapp.model.shared.getCraftOfWorker.GetCraftOfWorker
+import com.example.warshaapp.model.shared.updateOffer.UpdateOffer
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
@@ -72,5 +79,46 @@ interface WarshaApi {
         @Part("orderDifficulty") orderDifficulty: RequestBody,
         @Part("description") description: RequestBody
     ): CreateOrder
+
+
+    //Get My Order
+    @GET("${Constant.CRAFT}/{craftId}/orders/myorders")
+    suspend fun getMyOrder(
+        @Path("craftId") craftId: String,
+        @Header("Authorization") authorization: String
+    ): GetMyOrder
+
+
+    //Delete Order
+    @DELETE("${Constant.CRAFT}/{craftId}/orders/{orderId}")
+    suspend fun deleteOrder(
+        @Path("craftId") craftId: String,
+        @Path("orderId") orderId: String,
+        @Header("Authorization") authorization: String
+    ): Delete
+
+    //Get OrderOfAnCraft
+    @GET(Constant.OFFER_OF_AN_ORDER + "/{orderId}")
+    suspend fun getOfferOfAnOrder(
+        @Header("Authorization") authorization: String,
+        @Path("orderId") orderId: String
+    ): GetOfferOfAnOrder
+
+    //update Order
+    @PATCH("${Constant.CRAFT}/{craftId}/orders/{orderId}")
+    suspend fun updateOrder(
+        @Path("craftId") craftId: String,
+        @Path("orderId") orderId: String,
+        @Header("Authorization") authorization: String,
+        @Body updateOrderBody: Map<String, String>
+    ): UpdateOrder
+
+    //updateOffer for client and worker
+    @PATCH(Constant.UPDATE_OFFER + "/{offerID}")
+    suspend fun updateOffer(
+        @Path("offerID") offerId: String,
+        @Header("Authorization") authorization: String,
+        @Body updateBody: Map<String, String>
+    ): UpdateOffer
 
 }

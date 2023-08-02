@@ -5,6 +5,7 @@ import com.example.warshaapp.data.WrapperClass
 import com.example.warshaapp.model.shared.authentication.AuthenticationCraftList
 import com.example.warshaapp.model.shared.getAllCrafts.GetAllCrafts
 import com.example.warshaapp.model.shared.getCraftOfWorker.GetCraftOfWorker
+import com.example.warshaapp.model.shared.updateOffer.UpdateOffer
 import com.example.warshaapp.network.WarshaApi
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
@@ -14,6 +15,7 @@ class SharedRepository @Inject constructor(private val api: WarshaApi) {
     private val getCraftList = WrapperClass<AuthenticationCraftList, Boolean, Exception>()
     private val getCraftOfWorker = WrapperClass<GetCraftOfWorker, Boolean, Exception>()
     private val getAllCrafts = WrapperClass<GetAllCrafts, Boolean, Exception>()
+    private val updateOffer = WrapperClass<UpdateOffer, Boolean, Exception>()
 
     suspend fun getCraftList()
             : WrapperClass<AuthenticationCraftList, Boolean, Exception> {
@@ -75,6 +77,30 @@ class SharedRepository @Inject constructor(private val api: WarshaApi) {
 
         }
         return getAllCrafts
+    }
+
+
+    suspend fun updateOffer(offerId: String, authorization: String, updateBody: Map<String, String>)
+            : WrapperClass<UpdateOffer, Boolean, Exception> {
+        try {
+            updateOffer.data = api.updateOffer(
+                offerId = offerId,
+                authorization = authorization,
+                updateBody = updateBody
+            )
+        } catch (e: HttpException) {
+            val error = e.response()?.errorBody()?.string()
+            val status = error!!.split("status")[1].split(":")[1].split("\"")[1]
+            val message = error.split("message")[1].split("\":")[1]
+            updateOffer.data = UpdateOffer(status = status, message = message)
+        } catch (e: Exception) {
+            Log.d("TAG", "updateOffer: $e")
+            updateOffer.e = e
+        } catch (e: SocketTimeoutException) {
+            Log.d("TAG", "updateOffer: $e")
+            updateOffer.e = e
+        }
+        return updateOffer
     }
 
 }

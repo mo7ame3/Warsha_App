@@ -14,11 +14,11 @@ enum class AllScreens {
 
     ClientHomeScreen,
     ClientPostScreen,
-    ClientMyCraftOrders,
+    ClientOrdersInCraftScreen,
     AdminClientProfileScreen,
     ClientProfileScreen,
     ClientMyProfileScreen,
-    ClientOrderOfferScreen,
+    ClientOrderOffersScreen,
     ClientRateScreen,
 
     //worker
@@ -43,5 +43,5 @@ enum class AllScreens {
     AdminReportListQuery,
     AdminCreateNewCraft,
 
-    ProfileScreen,
+    SettingScreen,
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -51,6 +52,8 @@ import com.example.warshaapp.data.WrapperClass
 import com.example.warshaapp.model.shared.craft.Craft
 import com.example.warshaapp.model.shared.getAllCrafts.GetAllCrafts
 import com.example.warshaapp.navigation.AllScreens
+import com.example.warshaapp.screens.client.order.ClientOrderScreen
+import com.example.warshaapp.screens.client.order.OrderViewModel
 import com.example.warshaapp.sharedpreference.SharedPreference
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -66,6 +69,7 @@ import kotlinx.coroutines.launch
 fun ClientHomeScreen(
     navController: NavController,
     clientHomeViewModel: ClientHomeViewModel,
+    orderViewModel: OrderViewModel,
     route: String
 ) {
     val scope = rememberCoroutineScope()
@@ -94,7 +98,6 @@ fun ClientHomeScreen(
     val isFirst = remember {
         mutableStateOf(true)
     }
-
 
     //bottomBar
     if (route == "home" || route == "chat" || route == "order") {
@@ -161,7 +164,7 @@ fun ClientHomeScreen(
     }) {
 
         ModalNavigationDrawer(drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet(modifier = Modifier.fillMaxWidth(0.8f)) {
                 DrawerHeader()
                 Spacer(modifier = Modifier.height(50.dp))
                 DrawerBody(isClient = true, name = name.value.toString()) {
@@ -180,7 +183,7 @@ fun ClientHomeScreen(
                     }
                     if (it.title == "إعدادات حسابي") {
                         scope.launch {
-                            navController.navigate(route = AllScreens.ProfileScreen.name + "/${true}")
+                            navController.navigate(route = AllScreens.SettingScreen.name + "/${true}")
                             drawerState.close()
                         }
                     }
@@ -227,8 +230,7 @@ fun ClientHomeScreen(
                             }
                         }
                         if (bottomSelected.value == "order") {
-//                            ClientOrderScreen(navController , orderViewModel)
-                            Text(text = "Order")
+                            ClientOrderScreen(navController, orderViewModel)
                         }
                         if (bottomSelected.value == "chat") {
                             //   ChatList(navController)

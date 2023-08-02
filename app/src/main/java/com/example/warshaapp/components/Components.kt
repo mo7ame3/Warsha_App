@@ -1,6 +1,7 @@
 package com.example.warshaapp.components
 
 import android.net.Uri
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -57,6 +59,7 @@ import coil.request.ImageRequest
 import com.example.warshaapp.R
 import com.example.warshaapp.constant.Constant
 import com.example.warshaapp.data.DrawerData
+import com.example.warshaapp.ui.theme.GoldColor
 import com.example.warshaapp.ui.theme.GrayColor
 import com.example.warshaapp.ui.theme.MainColor
 import com.example.warshaapp.ui.theme.SecondaryColor
@@ -403,6 +406,87 @@ fun PickPhoto(
             contentDescription = null,
             tint = if (!isProfile) Color.Gray.copy(alpha = 0.2f) else Color.White
         )
+    }
+}
+
+@Composable
+fun ProblemDescription(
+    problemDescription: String, modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .height(250.dp)
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(25.dp),
+        border = BorderStroke(width = 1.dp, color = MainColor)
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 25.dp, end = 25.dp, top = 10.dp)
+        ) {
+            item {
+                Text(
+                    text = problemDescription, style = TextStyle(
+                        color = MainColor, fontSize = 20.sp
+                    )
+                )
+            }
+        }
+    }
+}
+
+
+@Composable
+fun GetSmallPhoto(uri: String? = null, isProfile: Boolean = false) {
+    Surface(
+        shape = CircleShape,
+        color = MainColor,
+        modifier = if (isProfile) Modifier.size(120.dp) else Modifier.size(50.dp)
+    ) {
+        if (uri != null) {
+            Image(
+                painter = rememberAsyncImagePainter(model = uri),
+                contentDescription = null,
+                modifier = Modifier.size(300.dp, 200.dp),
+            )
+        } else {
+            Icon(
+                imageVector = Icons.Default.Person, contentDescription = null, tint = Color.White
+            )
+        }
+    }
+
+}
+
+@Composable
+fun StarsNumber(stars: Int) {
+    Row {
+        if (stars >= 1) {
+            Icon(
+                imageVector = Icons.Default.Star, contentDescription = null, tint = GoldColor
+            )
+        }
+        if (stars >= 2) {
+            Icon(
+                imageVector = Icons.Default.Star, contentDescription = null, tint = GoldColor
+            )
+        }
+        if (stars >= 3) {
+            Icon(
+                imageVector = Icons.Default.Star, contentDescription = null, tint = GoldColor
+            )
+        }
+        if (stars >= 4) {
+            Icon(
+                imageVector = Icons.Default.Star, contentDescription = null, tint = GoldColor
+            )
+        }
+        if (stars == 5) {
+            Icon(
+                imageVector = Icons.Default.Star, contentDescription = null, tint = GoldColor
+            )
+        }
     }
 }
 
