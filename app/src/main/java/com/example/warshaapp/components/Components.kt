@@ -28,6 +28,8 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -59,6 +61,7 @@ import coil.request.ImageRequest
 import com.example.warshaapp.R
 import com.example.warshaapp.constant.Constant
 import com.example.warshaapp.data.DrawerData
+import com.example.warshaapp.data.MyCraftOrderData
 import com.example.warshaapp.ui.theme.GoldColor
 import com.example.warshaapp.ui.theme.GrayColor
 import com.example.warshaapp.ui.theme.MainColor
@@ -460,6 +463,15 @@ fun GetSmallPhoto(uri: String? = null, isProfile: Boolean = false) {
 }
 
 @Composable
+fun ProfilePhoto(uri: Uri? = null) {
+    Surface(
+        shape = CircleShape, color = MainColor, modifier = Modifier.size(120.dp)
+    ) {
+        PickPhoto(uri, isProfile = true)
+    }
+}
+
+@Composable
 fun StarsNumber(stars: Int) {
     Row {
         if (stars >= 1) {
@@ -486,6 +498,60 @@ fun StarsNumber(stars: Int) {
             Icon(
                 imageVector = Icons.Default.Star, contentDescription = null, tint = GoldColor
             )
+        }
+    }
+}
+
+
+@Composable
+fun SmallPhoto(uri: Uri? = null) {
+    Surface(
+        shape = CircleShape, color = MainColor, modifier = Modifier.size(50.dp)
+    ) {
+        PickPhoto(isProfile = true, selectImage = uri)
+    }
+}
+
+@Composable
+fun ClientCompleteProjectRow(
+    item: MyCraftOrderData
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp)
+            .padding(start = 15.dp, end = 15.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        elevation = CardDefaults.cardElevation(5.dp),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 5.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // photo url from data base workers photos
+            SmallPhoto()
+            Spacer(modifier = Modifier.width(5.dp))
+            Column {
+                Text(
+                    text = item.workerName.toString(), style = TextStyle(
+                        color = MainColor,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                )
+                Text(
+                    text = item.problemTitle + "- " + item.problemType, style = TextStyle(
+                        color = MainColor,
+                        fontSize = 12.sp,
+                    )
+                )
+                StarsNumber(stars = item.workerRate!!)
+
+            }
         }
     }
 }

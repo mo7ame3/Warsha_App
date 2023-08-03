@@ -11,7 +11,9 @@ import com.example.warshaapp.model.shared.authentication.AuthenticationCraftList
 import com.example.warshaapp.model.shared.delete.Delete
 import com.example.warshaapp.model.shared.getAllCrafts.GetAllCrafts
 import com.example.warshaapp.model.shared.getCraftOfWorker.GetCraftOfWorker
+import com.example.warshaapp.model.shared.profile.GetProfile
 import com.example.warshaapp.model.shared.updateOffer.UpdateOffer
+import com.example.warshaapp.model.shared.updateProfile.UpdateProfile
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -120,5 +122,29 @@ interface WarshaApi {
         @Header("Authorization") authorization: String,
         @Body updateBody: Map<String, String>
     ): UpdateOffer
+
+
+    @GET(Constant.GET_PROFILE + "/{userId}")
+    suspend fun getProfile(
+        @Path("userId") userId: String,
+        @Header("Authorization") authorization: String,
+    ): GetProfile
+
+    //update profile photo client and worker
+    @Multipart
+    @PATCH(Constant.UPDATE_PROFILE_PHOTO + "/{userId}")
+    suspend fun updateProfilePhoto(
+        @Path("userId") userId: String,
+        @Part image: MultipartBody.Part,
+        @Header("Authorization") authorization: String
+    ): UpdateProfile
+
+    //Update Profile Setting
+    @PATCH(Constant.GET_PROFILE + "/{userId}")
+    suspend fun updateProfileData(
+        @Path("userId") userId: String,
+        @Header("Authorization") authorization: String,
+        @Body updateProfileBody: Map<String, String>
+    ): UpdateProfile
 
 }

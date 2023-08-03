@@ -15,6 +15,8 @@ import com.example.warshaapp.screens.client.order.details.ClientOrdersInCraftScr
 import com.example.warshaapp.screens.client.order.details.offers.ClientOrderOffersScreen
 import com.example.warshaapp.screens.client.postScreen.ClientPostScreen
 import com.example.warshaapp.screens.client.postScreen.ClientPostViewModel
+import com.example.warshaapp.screens.client.profile.ClientMyProfileScreen
+import com.example.warshaapp.screens.client.profile.ClientProfileViewModel
 import com.example.warshaapp.screens.sharedScreens.authentication.login.AuthenticationViewModel
 import com.example.warshaapp.screens.sharedScreens.authentication.login.LoginScreen
 import com.example.warshaapp.screens.sharedScreens.splash.SplashScreen
@@ -125,6 +127,21 @@ fun NavGraph() {
                 orderDescription = data.arguments?.getString("orderDescription")!!,
                 orderId = data.arguments?.getString("orderId")!!,
                 craftId = data.arguments?.getString("craftId")!!,
+            )
+        }
+
+        //Client Profile
+        composable(
+            route = "${AllScreens.ClientMyProfileScreen.name}/{completeProject}",
+            arguments = listOf(navArgument(name = "completeProject") {
+                type = NavType.BoolType
+            })
+        ) { data ->
+            val clientProfileViewModel = hiltViewModel<ClientProfileViewModel>()
+            ClientMyProfileScreen(
+                navController = navController,
+                completeProject = data.arguments!!.getBoolean("completeProject"),
+                clientProfileViewModel = clientProfileViewModel
             )
         }
 

@@ -2,11 +2,14 @@ package com.example.warshaapp.constant
 
 import android.annotation.SuppressLint
 import com.example.warshaapp.R
+import com.example.warshaapp.data.MyCraftOrderData
 
 object Constant {
     const val title = "ورشة"
+
     @SuppressLint("NonConstantResourceId")
-     val logo = R.drawable.home
+    val logo = R.drawable.home
+
     //token
     var token = ""
 
@@ -52,5 +55,52 @@ object Constant {
     const val GET_MY_OFFER = "api/v1/offers/myOffers"
 
     //updatePassword
-    const val UPDATE_PASSWORD  = "api/v1/users/updatePassword"
+    const val UPDATE_PASSWORD = "api/v1/users/updatePassword"
+
+
+    val completeist = listOf(
+        MyCraftOrderData(
+            workerName = "أحمد محمد",
+            workerRate = 5,
+            problemType = "صيانة بسيطة",
+            problemTitle = "تصليح كرسي"
+        ),
+        MyCraftOrderData(
+            workerName = "أحمد محمد",
+            workerRate = 5,
+            problemType = "صيانة بسيطة",
+            problemTitle = "تصليح كرسي"
+        ),
+        MyCraftOrderData(
+            workerName = "محمد أحمد",
+            workerRate = 3,
+            problemType = "صيانة بسيطة",
+            problemTitle = "تصليح كرسي"
+        ),
+        MyCraftOrderData(
+            workerName = "محمد محمد",
+            workerRate = 2,
+            problemType = "صيانة بسيطة",
+            problemTitle = "تصليح كرسي"
+        ),
+        MyCraftOrderData(
+            workerName = "محمود محمد",
+            workerRate = 4,
+            problemType = "صيانة بسيطة",
+            problemTitle = "تصليح كرسي"
+        ),
+        MyCraftOrderData(
+            workerName = "محمود أحمد",
+            workerRate = 3,
+            problemType = "صيانة بسيطة",
+            problemTitle = "تصليح كرسي"
+        ),
+        MyCraftOrderData(
+            workerName = "عباس احمد",
+            workerRate = 3,
+            problemType = "صيانة بسيطة",
+            problemTitle = "تصليح كرسي"
+        ),
+    )
+
 }
