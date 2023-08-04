@@ -16,6 +16,7 @@ import com.example.warshaapp.screens.client.order.details.offers.ClientOrderOffe
 import com.example.warshaapp.screens.client.postScreen.ClientPostScreen
 import com.example.warshaapp.screens.client.postScreen.ClientPostViewModel
 import com.example.warshaapp.screens.client.profile.ClientMyProfileScreen
+import com.example.warshaapp.screens.client.profile.ClientProfileScreen
 import com.example.warshaapp.screens.client.profile.ClientProfileViewModel
 import com.example.warshaapp.screens.sharedScreens.authentication.login.AuthenticationViewModel
 import com.example.warshaapp.screens.sharedScreens.authentication.login.LoginScreen
@@ -103,6 +104,7 @@ fun NavGraph() {
             )
 
         }
+
         //OrderOffers
         composable(route = AllScreens.ClientOrderOffersScreen.name + "/{problemTitle}/{orderDescription}/{orderId}/{craftId}",
             arguments = listOf(
@@ -145,6 +147,22 @@ fun NavGraph() {
             )
         }
 
+        composable(
+            route = AllScreens.ClientProfileScreen.name + "/{clientId}",
+            arguments = listOf(
+                navArgument(name = "clientId") {
+                    type = NavType.StringType
+                },
+            )
+        )
+        {
+            val clientProfileViewModel = hiltViewModel<ClientProfileViewModel>()
+            ClientProfileScreen(
+                navController = navController,
+                clientId = it.arguments?.getString("clientId").toString(),
+                clientProfileViewModel = clientProfileViewModel
+            )
+        }
 
     }
 }
