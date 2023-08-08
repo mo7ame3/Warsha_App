@@ -13,6 +13,7 @@ import com.example.warshaapp.model.shared.getAllCrafts.GetAllCrafts
 import com.example.warshaapp.model.shared.getCraftOfWorker.GetCraftOfWorker
 import com.example.warshaapp.model.shared.profile.GetProfile
 import com.example.warshaapp.model.shared.updateOffer.UpdateOffer
+import com.example.warshaapp.model.shared.updatePassword.UpdatePassword
 import com.example.warshaapp.model.shared.updateProfile.UpdateProfile
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -53,6 +54,13 @@ interface WarshaApi {
     //Get Craft List use in Register and Client Order Home
     @GET(Constant.CRAFT_LIST)
     suspend fun getCraftList(): AuthenticationCraftList
+
+
+    @PATCH(Constant.UPDATE_PASSWORD)
+    suspend fun updatePassword(
+        @Header("Authorization") authorization: String,
+        @Body updatePasswordBody: Map<String, String>
+    ): UpdatePassword
 
 
     //Get Craft Of Worker

@@ -7,6 +7,7 @@ import com.example.warshaapp.model.shared.getAllCrafts.GetAllCrafts
 import com.example.warshaapp.model.shared.getCraftOfWorker.GetCraftOfWorker
 import com.example.warshaapp.model.shared.profile.GetProfile
 import com.example.warshaapp.model.shared.updateOffer.UpdateOffer
+import com.example.warshaapp.model.shared.updatePassword.UpdatePassword
 import com.example.warshaapp.model.shared.updateProfile.UpdateProfile
 import com.example.warshaapp.network.WarshaApi
 import okhttp3.MultipartBody
@@ -22,13 +23,14 @@ class SharedRepository @Inject constructor(private val api: WarshaApi) {
     private val getProfile = WrapperClass<GetProfile, Boolean, Exception>()
     private val updateProfilePhoto = WrapperClass<UpdateProfile, Boolean, Exception>()
     private val updateProfileData = WrapperClass<UpdateProfile, Boolean, Exception>()
+    private val updatePassword = WrapperClass<UpdatePassword, Boolean, Exception>()
+
 
     suspend fun getCraftList()
             : WrapperClass<AuthenticationCraftList, Boolean, Exception> {
         try {
             getCraftList.data = api.getCraftList()
         } catch (e: HttpException) {
-            //addNewUser.loading = true
             val error = e.response()?.errorBody()?.string()
             val status = error!!.split("status")[1].split(":")[1].split("\"")[1]
             val message = error.split("message")[1].split("\":")[1]
@@ -48,7 +50,6 @@ class SharedRepository @Inject constructor(private val api: WarshaApi) {
         try {
             getCraftOfWorker.data = api.getCraftOfWorker(workerId = workerId)
         } catch (e: HttpException) {
-            //addNewUser.loading = true
             val error = e.response()?.errorBody()?.string()
             val status = error!!.split("status")[1].split(":")[1].split("\"")[1]
             val message = error.split("message")[1].split("\":")[1]
@@ -176,6 +177,31 @@ class SharedRepository @Inject constructor(private val api: WarshaApi) {
             updateProfileData.e = e
         }
         return updateProfileData
+    }
+
+
+    suspend fun updatePassword(
+        authorization: String,
+        updatePasswordBody: Map<String, String>
+    ): WrapperClass<UpdatePassword, Boolean, Exception> {
+        try {
+            updatePassword.data = api.updatePassword(
+                authorization = authorization,
+                updatePasswordBody = updatePasswordBody
+            )
+        } catch (e: HttpException) {
+            val error = e.response()?.errorBody()?.string()
+            val status = error!!.split("status")[1].split(":")[1].split("\"")[1]
+            val message = error.split("message")[1].split("\":")[1]
+            updatePassword.data = UpdatePassword(status = status, message = message)
+        } catch (e: Exception) {
+            Log.d("TAG", "updatePassword: $e")
+            updatePassword.e = e
+        } catch (e: SocketTimeoutException) {
+            Log.d("TAG", "updatePassword: $e")
+            updatePassword.e = e
+        }
+        return updatePassword
     }
 
 }

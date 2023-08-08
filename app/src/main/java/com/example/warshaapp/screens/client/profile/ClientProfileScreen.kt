@@ -161,7 +161,7 @@ fun ClientProfileScreen(
                             .fillMaxWidth()
                             .height(400.dp)
                     ) {
-                        items(Constant.completeist) {
+                        items(Constant.completeList) {
                             ClientCompleteProjectRow(item = it)
                             Spacer(modifier = Modifier.height(20.dp))
                         }

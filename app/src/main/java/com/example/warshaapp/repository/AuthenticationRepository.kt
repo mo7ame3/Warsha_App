@@ -16,10 +16,8 @@ class AuthenticationRepository @Inject constructor(private val api: WarshaApi) {
     suspend fun addNewUser(register: Map<String, String>)
             : WrapperClass<Authentication, Boolean, Exception> {
         try {
-            // addNewUser.loading = true
             loginOrRegister.data = api.register(register)
         } catch (e: HttpException) {
-            //addNewUser.loading = true
             val error = e.response()?.errorBody()?.string()
             val status = error!!.split("status")[1].split(":")[1].split("\"")[1]
             val message = error.split("message")[1].split("\":")[1]
@@ -38,14 +36,13 @@ class AuthenticationRepository @Inject constructor(private val api: WarshaApi) {
     suspend fun addLoggedInUser(login: Map<String, String>)
             : WrapperClass<Authentication, Boolean, Exception> {
         try {
-            //addNewUser.loading = true
             loginOrRegister.data = api.login(loginInput = login)
         } catch (e: HttpException) {
-            //addNewUser.loading = true
             val error = e.response()?.errorBody()?.string()
             val status = error!!.split("status")[1].split(":")[1].split("\"")[1]
             val message = error.split("message")[1].split("\":")[1]
             loginOrRegister.data = Authentication(status = status, message = message)
+            Log.d("TAG", "error: ${error}")
 
         } catch (e: Exception) {
             Log.d("TAG", "addLoggedInUser: $e")
@@ -60,11 +57,9 @@ class AuthenticationRepository @Inject constructor(private val api: WarshaApi) {
     suspend fun workerChooseCraft(workerId: String, myCraft: Map<String, String>, token: String)
             : WrapperClass<AuthenticationCraft, Boolean, Exception> {
         try {
-            // addNewUser.loading = true
             workerChooseCraft.data =
                 api.workerChooseCraft(workerId = workerId, myCraft = myCraft, authorization = token)
         } catch (e: HttpException) {
-            //addNewUser.loading = true
             val error = e.response()?.errorBody()?.string()
             val status = error!!.split("status")[1].split(":")[1].split("\"")[1]
             workerChooseCraft.data = AuthenticationCraft(status = status)

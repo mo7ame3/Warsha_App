@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.warshaapp.components.CircleProgress
 import com.example.warshaapp.components.DropList
 import com.example.warshaapp.components.LoginButton
 import com.example.warshaapp.components.PasswordInput
@@ -160,13 +160,15 @@ fun RegisterForm(
                 craftId.value = ""
             }
             if (role.value == workerOrClientList[1]) {
-                DropList(
-                    expanded = craftExpanded,
-                    value = craftName,
-                    craftList = craftList,
-                    label = "الوظيفة",
-                    craftId = craftId
-                )
+                if (craftList != null) {
+                    DropList(
+                        expanded = craftExpanded,
+                        value = craftName,
+                        craftList = craftList,
+                        label = "الوظيفة",
+                        craftId = craftId
+                    )
+                }
             }
             PasswordInput(
                 password = password,
@@ -218,7 +220,7 @@ fun RegisterForm(
                                             workerId = register.data!!.data?.user!!.id
                                         )
                                     if (myCraft.data?.status == "success") {
-//                                    sharedPreference.saveCraftId(craftId.value)
+                                        sharedPreference.saveCraftId(craftId.value)
                                         navController.navigate(AllScreens.WorkerHomeScreen.name + "/login") {
                                             navController.popBackStack()
                                         }
@@ -288,7 +290,7 @@ fun RegisterForm(
                                         workerId = register.data!!.data?.user!!.id
                                     )
                                 if (myCraft.data?.status == "success") {
-//                                    sharedPreference.saveCraftId(craftId.value)
+                                    sharedPreference.saveCraftId(craftId.value)
                                     navController.navigate(AllScreens.WorkerHomeScreen.name + "/login") {
                                         navController.popBackStack()
                                     }
@@ -327,7 +329,7 @@ fun RegisterForm(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CircularProgressIndicator()
+            CircleProgress()
         }
     }
 }

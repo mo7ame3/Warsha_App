@@ -3,6 +3,7 @@
 package com.example.warshaapp.components
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -79,7 +80,7 @@ fun TextInput(
         },
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         keyboardActions = onAction,
-        colors = if (label == "البريد الالكتروني" || label == "عنوان المشروع" || label == "نوع المشكلة") {
+        colors = if ((label == "البريد الالكتروني") || (label == "عنوان المشروع") || (label == "نوع المشكلة")) {
             TextFieldDefaults.outlinedTextFieldColors(
                 containerColor = if (!isNotBackground) {
                     SecondaryColor.copy(
@@ -96,10 +97,10 @@ fun TextInput(
                 } else Color.White,
                 disabledBorderColor = Color.Transparent,
                 focusedBorderColor = if (isBorder) {
-                    if (isNotBackground) Color.Transparent else MainColor
+                    if (!isNotBackground) Color.Transparent else MainColor
                 } else Color.White,
                 unfocusedBorderColor = if (isBorder) {
-                    if (isNotBackground) Color.Transparent else MainColor
+                    if (!isNotBackground) Color.Transparent else MainColor
                 } else
                     Color.White
             )
@@ -124,7 +125,8 @@ fun DropInput(
     readOnly: Boolean = false,
     label: String,
     isNotBackground: Boolean = false,
-    isSingleLine: Boolean = true
+    isSingleLine: Boolean = true,
+    leadingImageVector: ImageVector? = null,
 ) {
     OutlinedTextField(
         readOnly = readOnly,
@@ -148,8 +150,12 @@ fun DropInput(
             ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded.value)
         },
         singleLine = isSingleLine,
-
-        )
+        leadingIcon = {
+            if (leadingImageVector != null) {
+                Icon(imageVector = leadingImageVector, contentDescription = null)
+            }
+        }
+    )
 }
 
 
@@ -235,6 +241,7 @@ fun DropList(
     expanded: MutableState<Boolean>,
     value: MutableState<String>,
     craftId: MutableState<String>? = null,
+    leadingImageVector: ImageVector? = null,
     label: String = "العنوان",
     list: List<String>? = null,
     craftList: List<Craft>? = null,
@@ -243,18 +250,35 @@ fun DropList(
 
     ExposedDropdownMenuBox(
         expanded = expanded.value,
-        onExpandedChange = { expanded.value = !expanded.value }) {
-        DropInput(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 25.dp, end = 25.dp)
-                .menuAnchor(),
-            text = value,
-            expanded = expanded,
-            readOnly = true,
-            label = label,
-            isNotBackground = isNotBackground
-        )
+        onExpandedChange = {
+            expanded.value = !expanded.value
+        }) {
+        if (leadingImageVector != null) {
+            DropInput(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 25.dp, end = 25.dp)
+                    .menuAnchor(),
+                text = value,
+                expanded = expanded,
+                leadingImageVector = leadingImageVector,
+                readOnly = true,
+                label = label,
+                isNotBackground = isNotBackground
+            )
+        } else {
+            DropInput(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 25.dp, end = 25.dp)
+                    .menuAnchor(),
+                text = value,
+                expanded = expanded,
+                readOnly = true,
+                label = label,
+                isNotBackground = isNotBackground
+            )
+        }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -262,7 +286,7 @@ fun DropList(
         ) {
             ExposedDropdownMenu(
                 expanded = expanded.value,
-                modifier = modifier,
+                modifier = modifier.background(color = Color.White),
                 onDismissRequest = {
                     expanded.value = false
                 },

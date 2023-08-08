@@ -58,7 +58,7 @@ object Constant {
     const val UPDATE_PASSWORD = "api/v1/users/updatePassword"
 
 
-    val completeist = listOf(
+    val completeList = listOf(
         MyCraftOrderData(
             workerName = "أحمد محمد",
             workerRate = 5,
@@ -101,6 +101,16 @@ object Constant {
             problemType = "صيانة بسيطة",
             problemTitle = "تصليح كرسي"
         ),
+    )
+
+    val reportList = listOf(
+        "شخص مزيف",
+        "سلوك غير لائق",
+        "عدم التزام بالمواعيد",
+        "سعر غير مناسب",
+        "عمل غير متقن",
+        "وصف غير دقيق للمشكلة",
+        "عامل غير كفء",
     )
 
 }

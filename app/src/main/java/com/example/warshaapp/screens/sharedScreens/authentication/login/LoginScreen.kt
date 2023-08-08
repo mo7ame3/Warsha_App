@@ -107,7 +107,7 @@ fun LoginScreen(navController: NavController, authenticationViewModel: Authentic
                         RegisterForm(
                             navController = navController,
                             authenticationViewModel = authenticationViewModel,
-                            craftList = authenticationViewModel.craftList.value.data?.data?.crafts!!,
+                            craftList = if (authenticationViewModel.craftList.value.data?.data?.crafts != null) authenticationViewModel.craftList.value.data?.data?.crafts!! else null,
                             loading = loading,
                             sharedPreference = sharedPreference
                         )
@@ -149,11 +149,9 @@ fun LoginForm(
         (!passwordError.value && !emailError.value && email.value.isNotBlank() && password.value.isNotBlank())
     if (!loading.value) {
         Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TextInput(
-                input = email,
+            TextInput(input = email,
                 isError = emailError,
                 label = "البريد الالكتروني",
                 onAction = KeyboardActions {
@@ -169,8 +167,7 @@ fun LoginForm(
                         loading.value = true
                         val login: WrapperClass<Authentication, Boolean, Exception> =
                             authenticationViewModel.login(
-                                email = email.value,
-                                password = password.value
+                                email = email.value, password = password.value
                             )
                         if (login.data?.status == "success") {
                             sharedPreference.saveName(login.data!!.data?.user!!.name)
@@ -208,16 +205,12 @@ fun LoginForm(
                         } else if (login.e != null) {
                             loading.value = false
                             Toast.makeText(
-                                context,
-                                "خطأ في الانترنت",
-                                Toast.LENGTH_SHORT
+                                context, "خطأ في الانترنت", Toast.LENGTH_SHORT
                             ).show()
                         } else if (login.data?.status == "fail" || login.data?.status == "error") {
                             loading.value = false
                             Toast.makeText(
-                                context,
-                                login.data?.message,
-                                Toast.LENGTH_SHORT
+                                context, login.data?.message, Toast.LENGTH_SHORT
                             ).show()
                         }
                     }
@@ -246,8 +239,7 @@ fun LoginForm(
                     loading.value = true
                     val login: WrapperClass<Authentication, Boolean, Exception> =
                         authenticationViewModel.login(
-                            email = email.value,
-                            password = password.value
+                            email = email.value, password = password.value
                         )
                     if (login.data?.status == "success") {
                         sharedPreference.saveName(login.data!!.data?.user!!.name)
@@ -285,16 +277,12 @@ fun LoginForm(
                     } else if (login.e != null) {
                         loading.value = false
                         Toast.makeText(
-                            context,
-                            "خطأ في الانترنت",
-                            Toast.LENGTH_SHORT
+                            context, "خطأ في الانترنت", Toast.LENGTH_SHORT
                         ).show()
                     } else if (login.data?.status == "fail" || login.data?.status == "error") {
                         loading.value = false
                         Toast.makeText(
-                            context,
-                            login.data?.message,
-                            Toast.LENGTH_SHORT
+                            context, login.data?.message, Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
