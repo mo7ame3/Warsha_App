@@ -6,6 +6,7 @@ data class Orders(
     val __v: Int,
     val _id: String,
     val avatar: String,
+    val status: String,
     val cloudinary_id: String,
     val craft: String,
     val createDate: String,

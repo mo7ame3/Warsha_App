@@ -10,7 +10,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ClientHomeViewModel @Inject constructor(private val sharedRepository: SharedRepository) :
     ViewModel() {
-    suspend fun getAllCrafts(token: String): WrapperClass<GetAllCrafts, Boolean, Exception> {
-        return sharedRepository.getAllCrafts(authorization = "Bearer $token")
+    suspend fun getAllCrafts(authorization: String): WrapperClass<GetAllCrafts, Boolean, Exception> {
+        return sharedRepository.getAllCrafts(authorization = "Bearer $authorization")
     }
 }

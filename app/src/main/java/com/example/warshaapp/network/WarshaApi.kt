@@ -15,6 +15,9 @@ import com.example.warshaapp.model.shared.profile.GetProfile
 import com.example.warshaapp.model.shared.updateOffer.UpdateOffer
 import com.example.warshaapp.model.shared.updatePassword.UpdatePassword
 import com.example.warshaapp.model.shared.updateProfile.UpdateProfile
+import com.example.warshaapp.model.worker.getMyOffer.GetMyOffer
+import com.example.warshaapp.model.worker.home.WorkerHome
+import com.example.warshaapp.model.worker.orderDetails.GetOrderDetails
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -77,6 +80,33 @@ interface WarshaApi {
         @Header("Authorization") authorization: String,
     ): GetAllCrafts
 
+
+    @GET(Constant.GET_PROFILE + "/{userId}")
+    suspend fun getProfile(
+        @Path("userId") userId: String,
+        @Header("Authorization") authorization: String,
+    ): GetProfile
+
+    //update profile photo client and worker
+    @Multipart
+    @PATCH(Constant.UPDATE_PROFILE_PHOTO + "/{userId}")
+    suspend fun updateProfilePhoto(
+        @Path("userId") userId: String,
+        @Part image: MultipartBody.Part,
+        @Header("Authorization") authorization: String
+    ): UpdateProfile
+
+    //Update Profile Setting
+    @PATCH(Constant.GET_PROFILE + "/{userId}")
+    suspend fun updateProfileData(
+        @Path("userId") userId: String,
+        @Header("Authorization") authorization: String,
+        @Body updateProfileBody: Map<String, String>
+    ): UpdateProfile
+
+
+    //Client
+
     //Create Order
 
     @Multipart
@@ -132,27 +162,29 @@ interface WarshaApi {
     ): UpdateOffer
 
 
-    @GET(Constant.GET_PROFILE + "/{userId}")
-    suspend fun getProfile(
-        @Path("userId") userId: String,
-        @Header("Authorization") authorization: String,
-    ): GetProfile
+    //worker
+    //Get worker Home
 
-    //update profile photo client and worker
-    @Multipart
-    @PATCH(Constant.UPDATE_PROFILE_PHOTO + "/{userId}")
-    suspend fun updateProfilePhoto(
-        @Path("userId") userId: String,
-        @Part image: MultipartBody.Part,
+    @GET("api/v1/crafts/{craftId}/orders")
+    suspend fun getWorkerHome(
+        @Path("craftId") craftId: String,
         @Header("Authorization") authorization: String
-    ): UpdateProfile
+    ): WorkerHome
 
-    //Update Profile Setting
-    @PATCH(Constant.GET_PROFILE + "/{userId}")
-    suspend fun updateProfileData(
+
+    //get my offer
+    @GET(Constant.GET_MY_OFFER + "/{userId}")
+    suspend fun getMyOffer(
         @Path("userId") userId: String,
-        @Header("Authorization") authorization: String,
-        @Body updateProfileBody: Map<String, String>
-    ): UpdateProfile
+        @Header("Authorization") authorization: String
+    ): GetMyOffer
+
+
+    @GET(Constant.CRAFT + "/{craftId}/orders/{orderId}")
+    suspend fun getOrderDetails(
+        @Path("craftId") craftId: String,
+        @Path("orderId") orderId: String,
+        @Header("Authorization") authorization: String
+    ): GetOrderDetails
 
 }

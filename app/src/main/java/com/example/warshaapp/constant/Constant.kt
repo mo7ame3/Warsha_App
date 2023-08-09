@@ -27,8 +27,6 @@ object Constant {
     //GetAllCrafts && CreateCraft && GetOneCraft && UpdateCraft
     const val CRAFT = "api/v1/crafts"
 
-    //CreateOrder
-    const val DELETE_CRAFT = "api/v1/crafts"
 
     //CraftList
     const val CRAFT_LIST = "api/v1/crafts/names"

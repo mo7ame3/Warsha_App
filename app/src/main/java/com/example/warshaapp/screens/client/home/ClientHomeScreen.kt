@@ -118,7 +118,7 @@ fun ClientHomeScreen(
             produceState<WrapperClass<GetAllCrafts, Boolean, Exception>>(
                 initialValue = WrapperClass(data = null)
             ) {
-                value = clientHomeViewModel.getAllCrafts(token = Constant.token)
+                value = clientHomeViewModel.getAllCrafts(authorization = Constant.token)
             }.value
         if (craftData.data?.status == "success") {
             if (craftData.data != null) {
@@ -150,7 +150,7 @@ fun ClientHomeScreen(
             loading = false
             scope.launch {
                 val craftData: WrapperClass<GetAllCrafts, Boolean, Exception> =
-                    clientHomeViewModel.getAllCrafts(token = Constant.token)
+                    clientHomeViewModel.getAllCrafts(authorization = Constant.token)
                 if (craftData.data?.status == "success") {
                     if (craftData.data != null) {
                         craftFromGetAllCraftList.emit(craftData.data!!.data?.crafts!!)
@@ -250,7 +250,7 @@ fun ClientHomeScreen(
                             loading = true
                             scope.launch {
                                 val craftData: WrapperClass<GetAllCrafts, Boolean, Exception> =
-                                    clientHomeViewModel.getAllCrafts(token = Constant.token)
+                                    clientHomeViewModel.getAllCrafts(authorization = Constant.token)
                                 if (craftData.data?.status == "success") {
                                     if (craftData.data != null) {
                                         scope.launch {

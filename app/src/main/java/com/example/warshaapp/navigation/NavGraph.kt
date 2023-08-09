@@ -25,6 +25,9 @@ import com.example.warshaapp.screens.sharedScreens.report.ReportScreen
 import com.example.warshaapp.screens.sharedScreens.setting.SettingScreen
 import com.example.warshaapp.screens.sharedScreens.setting.SettingViewModel
 import com.example.warshaapp.screens.sharedScreens.splash.SplashScreen
+import com.example.warshaapp.screens.worker.home.WorkerHomeScreen
+import com.example.warshaapp.screens.worker.home.WorkerHomeViewModel
+import com.example.warshaapp.screens.worker.myOffers.MyOffersViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -183,8 +186,6 @@ fun NavGraph() {
                 clientProfileViewModel = clientProfileViewModel
             )
         }
-
-
         composable(
             route = AllScreens.SettingScreen.name + "/{client}",
             arguments = listOf(navArgument(name = "client") {
@@ -195,8 +196,29 @@ fun NavGraph() {
             SettingScreen(
                 navController = navController,
                 client = it.arguments!!.getBoolean("client"),
-                settingViewModel =settingViewModel
+                settingViewModel = settingViewModel
             )
+        }
+
+
+        //worker
+
+        composable(
+            route = AllScreens.WorkerHomeScreen.name + "/{route}",
+            arguments = listOf(navArgument(name = "route") {
+                type = NavType.StringType
+            })
+        ) { data ->
+            val viewModel = hiltViewModel<WorkerHomeViewModel>()
+            val myOfferViewModel = hiltViewModel<MyOffersViewModel>()
+            data.arguments!!.getString("route")?.let {
+                WorkerHomeScreen(
+                    navController = navController,
+                    route = it,
+                    workerHomeViewModel = viewModel,
+                    myOffersViewModel = myOfferViewModel
+                )
+            }
         }
 
     }

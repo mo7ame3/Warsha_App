@@ -556,3 +556,24 @@ fun ClientCompleteProjectRow(
     }
 }
 
+
+@Composable
+fun EmptyColumn(
+    text: String
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        item {
+            Text(
+                text = text, style = TextStyle(
+                    color = MainColor,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 20.sp
+                )
+            )
+        }
+    }
+}
