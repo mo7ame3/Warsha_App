@@ -62,6 +62,7 @@ import com.example.warshaapp.R
 import com.example.warshaapp.constant.Constant
 import com.example.warshaapp.data.DrawerData
 import com.example.warshaapp.data.MyCraftOrderData
+import com.example.warshaapp.model.worker.getMyOffer.Data
 import com.example.warshaapp.ui.theme.GoldColor
 import com.example.warshaapp.ui.theme.GrayColor
 import com.example.warshaapp.ui.theme.MainColor
@@ -574,6 +575,56 @@ fun EmptyColumn(
                     fontSize = 20.sp
                 )
             )
+        }
+    }
+}
+
+
+@Composable
+fun CompleteMyProjectRow(
+    item: Data
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp)
+            .padding(start = 15.dp, end = 15.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        elevation = CardDefaults.cardElevation(2.dp),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 5.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // photo url from data base workers photos
+            GetSmallPhoto(uri = if (item.order.user.avatar != null) item.order.user.avatar.toString() else null)
+            Spacer(modifier = Modifier.width(5.dp))
+            Column {
+                Text(
+                    text = item.order.user.name, style = TextStyle(
+                        color = MainColor,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                )
+                Text(
+                    text = item.order.title, style = TextStyle(
+                        color = MainColor,
+                        fontSize = 15.sp,
+                    )
+                )
+                Text(
+                    text = item.order.orderDifficulty, style = TextStyle(
+                        color = GrayColor,
+                        fontSize = 12.sp,
+                    )
+                )
+
+            }
         }
     }
 }

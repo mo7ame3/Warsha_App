@@ -21,8 +21,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -52,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.warshaapp.R
 import com.example.warshaapp.components.CircleProgress
+import com.example.warshaapp.components.CompleteMyProjectRow
 import com.example.warshaapp.components.EmptyColumn
 import com.example.warshaapp.components.GetSmallPhoto
 import com.example.warshaapp.components.LoginButton
@@ -66,7 +65,6 @@ import com.example.warshaapp.model.shared.user.User
 import com.example.warshaapp.model.worker.getMyOffer.Data
 import com.example.warshaapp.model.worker.getMyOffer.GetMyOffer
 import com.example.warshaapp.sharedpreference.SharedPreference
-import com.example.warshaapp.ui.theme.GrayColor
 import com.example.warshaapp.ui.theme.MainColor
 import com.example.warshaapp.ui.theme.RedColor
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -443,55 +441,6 @@ fun WorkerMyProfileScreen(
 
 }
 
-
-@Composable
-fun CompleteMyProjectRow(
-    item: Data
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(100.dp)
-            .padding(start = 15.dp, end = 15.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        elevation = CardDefaults.cardElevation(2.dp),
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(start = 5.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            // photo url from data base workers photos
-            GetSmallPhoto(uri = if (item.order.user.avatar != null) item.order.user.avatar.toString() else null)
-            Spacer(modifier = Modifier.width(5.dp))
-            Column {
-                Text(
-                    text = item.order.user.name, style = TextStyle(
-                        color = MainColor,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                )
-                Text(
-                    text = item.order.title, style = TextStyle(
-                        color = MainColor,
-                        fontSize = 15.sp,
-                    )
-                )
-                Text(
-                    text = item.order.orderDifficulty, style = TextStyle(
-                        color = GrayColor,
-                        fontSize = 12.sp,
-                    )
-                )
-
-            }
-        }
-    }
-}
 
 @Composable
 fun PickMyPhotoRow(

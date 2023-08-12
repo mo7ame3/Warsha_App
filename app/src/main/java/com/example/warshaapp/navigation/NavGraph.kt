@@ -29,6 +29,7 @@ import com.example.warshaapp.screens.worker.home.WorkerHomeScreen
 import com.example.warshaapp.screens.worker.home.WorkerHomeViewModel
 import com.example.warshaapp.screens.worker.myOffers.MyOffersViewModel
 import com.example.warshaapp.screens.worker.profile.WorkerMyProfileScreen
+import com.example.warshaapp.screens.worker.profile.WorkerProfileScreen
 import com.example.warshaapp.screens.worker.profile.WorkerProfileViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -228,6 +229,19 @@ fun NavGraph() {
             val workerProfileViewModel = hiltViewModel<WorkerProfileViewModel>()
             WorkerMyProfileScreen(
                 navController = navController,
+                workerProfileViewModel = workerProfileViewModel
+            )
+        }
+
+        composable(route = AllScreens.WorkerProfileScreen.name + "/{workerId}", arguments = listOf(
+            navArgument(name = "workerId") {
+                type = NavType.StringType
+            }
+        )) {
+            val workerProfileViewModel = hiltViewModel<WorkerProfileViewModel>()
+            WorkerProfileScreen(
+                navController = navController,
+                workerId = it.arguments?.getString("workerId").toString(),
                 workerProfileViewModel = workerProfileViewModel
             )
         }
