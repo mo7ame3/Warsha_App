@@ -28,6 +28,8 @@ import com.example.warshaapp.screens.sharedScreens.splash.SplashScreen
 import com.example.warshaapp.screens.worker.home.WorkerHomeScreen
 import com.example.warshaapp.screens.worker.home.WorkerHomeViewModel
 import com.example.warshaapp.screens.worker.myOffers.MyOffersViewModel
+import com.example.warshaapp.screens.worker.profile.WorkerMyProfileScreen
+import com.example.warshaapp.screens.worker.profile.WorkerProfileViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -219,6 +221,15 @@ fun NavGraph() {
                     myOffersViewModel = myOfferViewModel
                 )
             }
+        }
+
+
+        composable(route = AllScreens.WorkerMyProfileScreen.name) {
+            val workerProfileViewModel = hiltViewModel<WorkerProfileViewModel>()
+            WorkerMyProfileScreen(
+                navController = navController,
+                workerProfileViewModel = workerProfileViewModel
+            )
         }
 
     }

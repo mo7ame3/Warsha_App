@@ -15,7 +15,6 @@ class WorkerRepository @Inject constructor(private val api: WarshaApi) {
     private val getMyOffer = WrapperClass<GetMyOffer, Boolean, Exception>()
     private val getOrderDetails = WrapperClass<GetOrderDetails, Boolean, Exception>()
 
-
     suspend fun getHome(
         craftId: String,
         authorization: String
@@ -94,5 +93,6 @@ class WorkerRepository @Inject constructor(private val api: WarshaApi) {
 
         return getOrderDetails
     }
+
 
 }
