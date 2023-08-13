@@ -57,6 +57,7 @@ import com.example.warshaapp.data.WrapperClass
 import com.example.warshaapp.model.shared.order.Orders
 import com.example.warshaapp.model.worker.home.WorkerHome
 import com.example.warshaapp.navigation.AllScreens
+import com.example.warshaapp.screens.worker.myOffers.MyOffersScreen
 import com.example.warshaapp.screens.worker.myOffers.MyOffersViewModel
 import com.example.warshaapp.sharedpreference.SharedPreference
 import com.example.warshaapp.ui.theme.GrayColor
@@ -318,13 +319,7 @@ fun WorkerHomeScreen(
                     }
                     //my projects
                     if (homeNavBar.value == "order") {
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text("Order")
-                        }
-//                        MyOffersScreen(navController, myOffersViewModel)
+                        MyOffersScreen(navController, myOffersViewModel)
                     }
                 } else if (loading && !exception) {
                     CircleProgress()
