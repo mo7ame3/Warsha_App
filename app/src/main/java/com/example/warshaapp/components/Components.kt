@@ -413,6 +413,56 @@ fun PickPhoto(
     }
 }
 
+
+//order photo
+@Composable
+fun InternetPhoto(
+    uri: String,
+) {
+
+    Box {
+        // to reload image
+        var refreshImage by remember { mutableStateOf(0) }
+        val painter = rememberAsyncImagePainter(
+            model = ImageRequest.Builder(LocalContext.current).data(uri)
+                .setParameter("refresh", refreshImage, memoryCacheKey = null).build()
+        )
+        Image(
+            painter = painter, contentDescription = null, modifier = Modifier
+                .fillMaxSize()
+                .clip(
+                    RoundedCornerShape(25.dp)
+                ), contentScale = ContentScale.Crop
+        )
+        // condition to reload image
+        when (painter.state) {
+            is AsyncImagePainter.State.Error -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                ) {
+                    IconButton(onClick = { refreshImage++ }) {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = null,
+                            modifier = Modifier.size(60.dp)
+                        )
+                    }
+                }
+            }
+
+            is AsyncImagePainter.State.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+
+            else -> {}
+        }
+    }
+}
+
 @Composable
 fun ProblemDescription(
     problemDescription: String, modifier: Modifier = Modifier

@@ -29,6 +29,8 @@ import com.example.warshaapp.screens.worker.home.WorkerHomeScreen
 import com.example.warshaapp.screens.worker.home.WorkerHomeViewModel
 import com.example.warshaapp.screens.worker.myOffers.MyOfferProblemDetails
 import com.example.warshaapp.screens.worker.myOffers.MyOffersViewModel
+import com.example.warshaapp.screens.worker.problemDetails.WorkerProblemDetails
+import com.example.warshaapp.screens.worker.problemDetails.WorkerProblemDetailsViewModel
 import com.example.warshaapp.screens.worker.profile.WorkerMyProfileScreen
 import com.example.warshaapp.screens.worker.profile.WorkerProfileScreen
 import com.example.warshaapp.screens.worker.profile.WorkerProfileViewModel
@@ -261,6 +263,18 @@ fun NavGraph() {
             )
         }
 
+        composable(route = AllScreens.WorkerProblemDetails.name + "/{orderId}", arguments = listOf(
+            navArgument(name = "orderId") {
+                type = NavType.StringType
+            }
+        )) {
+            val viewModel = hiltViewModel<WorkerProblemDetailsViewModel>()
+
+            WorkerProblemDetails(
+                navController = navController, orderID = it.arguments?.getString("orderId")
+                    .toString(), workerProblemDetailsViewModel = viewModel
+            )
+        }
 
     }
 }

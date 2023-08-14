@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Card
@@ -113,7 +111,7 @@ fun MyOffersScreen(
         val response: WrapperClass<GetMyOffer, Boolean, Exception> =
             produceState<WrapperClass<GetMyOffer, Boolean, Exception>>(initialValue = WrapperClass()) {
                 value = myOffersViewModel.getMyOffers(
-                    authorization = "Bearer " + Constant.token, userId = userId.value.toString()
+                    authorization = Constant.token, userId = userId.value.toString()
                 )
             }.value
         if (response.data?.status == "success") {
@@ -202,8 +200,9 @@ fun MyOffersScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                        .padding(start = 35.dp, end = 35.dp, top = 20.dp)
+                        .padding(start = 35.dp, end = 35.dp, top = 50.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     if (!loading && !exception) {
                         Row(
@@ -376,7 +375,11 @@ fun UnderwayRow(
                 .height(120.dp)
                 .clickable {
                     onAction.invoke(item)
-                }, elevation = CardDefaults.cardElevation(5.dp)
+                },
+            elevation = CardDefaults.cardElevation(5.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            )
         ) {
             Row(
                 modifier = Modifier
@@ -448,7 +451,11 @@ fun OffersDidNotStartYet(
                 .height(100.dp)
                 .clickable {
                     onAction.invoke(item)
-                }, elevation = CardDefaults.cardElevation(5.dp)
+                },
+            elevation = CardDefaults.cardElevation(5.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White
+            )
         ) {
             Row(
                 modifier = Modifier

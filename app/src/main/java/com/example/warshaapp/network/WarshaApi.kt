@@ -15,6 +15,7 @@ import com.example.warshaapp.model.shared.profile.GetProfile
 import com.example.warshaapp.model.shared.updateOffer.UpdateOffer
 import com.example.warshaapp.model.shared.updatePassword.UpdatePassword
 import com.example.warshaapp.model.shared.updateProfile.UpdateProfile
+import com.example.warshaapp.model.worker.createOffer.CreateOffer
 import com.example.warshaapp.model.worker.getMyOffer.GetMyOffer
 import com.example.warshaapp.model.worker.home.WorkerHome
 import com.example.warshaapp.model.worker.orderDetails.GetOrderDetails
@@ -186,5 +187,13 @@ interface WarshaApi {
         @Path("orderId") orderId: String,
         @Header("Authorization") authorization: String
     ): GetOrderDetails
+
+    //Create Offer
+    @POST(Constant.CREATE_OFFER + "/{orderId}")
+    suspend fun createOffer(
+        @Header("Authorization") authorization: String,
+        @Path("orderId") orderId: String,
+        @Body offerBody: Map<String, String>
+    ): CreateOffer
 
 }

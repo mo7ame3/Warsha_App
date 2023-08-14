@@ -2,6 +2,7 @@ package com.example.warshaapp.repository
 
 import android.util.Log
 import com.example.warshaapp.data.WrapperClass
+import com.example.warshaapp.model.worker.createOffer.CreateOffer
 import com.example.warshaapp.model.worker.getMyOffer.GetMyOffer
 import com.example.warshaapp.model.worker.home.WorkerHome
 import com.example.warshaapp.model.worker.orderDetails.GetOrderDetails
@@ -14,7 +15,7 @@ class WorkerRepository @Inject constructor(private val api: WarshaApi) {
     private val getHome = WrapperClass<WorkerHome, Boolean, Exception>()
     private val getMyOffer = WrapperClass<GetMyOffer, Boolean, Exception>()
     private val getOrderDetails = WrapperClass<GetOrderDetails, Boolean, Exception>()
-
+    private val createOffer = WrapperClass<CreateOffer, Boolean, Exception>()
     suspend fun getHome(
         craftId: String,
         authorization: String
@@ -94,5 +95,35 @@ class WorkerRepository @Inject constructor(private val api: WarshaApi) {
         return getOrderDetails
     }
 
+
+    suspend fun createOffer(
+        authorization: String,
+        orderId: String,
+        offerBody: Map<String, String>
+    ): WrapperClass<CreateOffer, Boolean, Exception> {
+        try {
+            createOffer.data = api.createOffer(
+                authorization = authorization,
+                offerBody = offerBody,
+                orderId = orderId
+            )
+        } catch (e: HttpException) {
+            val error = e.response()?.errorBody()?.string()
+            val status = error!!.split("status")[1].split(":")[1].split("\"")[1]
+            val message = error.split("message")[1].split("\":")[1]
+            Log.d("TAG", "createOffer: $message")
+            createOffer.data = CreateOffer(status = status, message = message)
+
+        } catch (e: SocketTimeoutException) {
+            createOffer.e = e
+            Log.d("TAG", "createOffer: $e")
+
+        } catch (e: Exception) {
+            getHome.e = e
+            Log.d("TAG", "createOffer: $e")
+        }
+
+        return createOffer
+    }
 
 }
