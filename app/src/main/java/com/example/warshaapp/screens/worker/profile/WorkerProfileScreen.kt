@@ -52,7 +52,7 @@ import com.example.warshaapp.data.MyCraftOrderData
 import com.example.warshaapp.data.WrapperClass
 import com.example.warshaapp.model.shared.profile.GetProfile
 import com.example.warshaapp.model.shared.user.User
-import com.example.warshaapp.navigation.AllScreens
+import com.example.warshaapp.screens.sharedScreens.report.ReportScreen
 import com.example.warshaapp.ui.theme.GrayColor
 import com.example.warshaapp.ui.theme.MainColor
 import com.example.warshaapp.ui.theme.RedColor
@@ -74,6 +74,10 @@ fun WorkerProfileScreen(
     val context = LocalContext.current
     //coroutineScope
     val scope = rememberCoroutineScope()
+
+    val report = remember {
+        mutableStateOf(false)
+    }
 
     //state flow list
     val getProfileUser = MutableStateFlow<List<User>>(emptyList())
@@ -119,121 +123,128 @@ fun WorkerProfileScreen(
 
         }
     }) {
-        if (!loading && !exception) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 30.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-
-                    GetSmallPhoto(
-                        isProfile = true,
-                        uri = if (getProfileUser.value[0].avatar != null) getProfileUser.value[0].avatar.toString() else null
-                    )
-
-                }
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = getProfileUser.value[0].name,
-                    style = TextStyle(
-                        color = MainColor,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                )
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(
-                    text = getProfileUser.value[0].address, style = TextStyle(
-                        color = Color.Gray,
-                        fontSize = 15.sp
-                    )
-                )
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(
-                    text = if (getProfileUser.value[0].bio != null) getProfileUser.value[0].bio.toString() else "",
-                    style = TextStyle(
-                        color = RedColor,
-                        fontSize = 12.sp
-                    ), maxLines = 1, overflow = TextOverflow.Ellipsis
-                )
-                Spacer(modifier = Modifier.height(5.dp))
-                //Stars
-                StarsNumber(if (getProfileUser.value[0].rate != null) getProfileUser.value[0].rate!!.toInt() else 0)
-                Spacer(modifier = Modifier.height(15.dp))
-                Row(
+        if (!report.value) {
+            if (!loading && !exception) {
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 50.dp, end = 50.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+                        .fillMaxSize()
+                        .padding(top = 30.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Top
                 ) {
-                    LoginButton(isLogin = true, label = "مشاريع مكتملة") {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+
+                        GetSmallPhoto(
+                            isProfile = true,
+                            uri = if (getProfileUser.value[0].avatar != null) getProfileUser.value[0].avatar.toString() else null
+                        )
 
                     }
-                }
-                Spacer(modifier = Modifier.height(20.dp))
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(350.dp)
-                ) {
-                    items(completeList) {
-                        CompleteProjectRow(it)
-                        Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(
+                        text = getProfileUser.value[0].name,
+                        style = TextStyle(
+                            color = MainColor,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Text(
+                        text = getProfileUser.value[0].address, style = TextStyle(
+                            color = Color.Gray,
+                            fontSize = 15.sp
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Text(
+                        text = if (getProfileUser.value[0].bio != null) getProfileUser.value[0].bio.toString() else "",
+                        style = TextStyle(
+                            color = RedColor,
+                            fontSize = 12.sp
+                        ), maxLines = 1, overflow = TextOverflow.Ellipsis
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    //Stars
+                    StarsNumber(if (getProfileUser.value[0].rate != null) getProfileUser.value[0].rate!!.toInt() else 0)
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 50.dp, end = 50.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        LoginButton(isLogin = true, label = "مشاريع مكتملة") {
+
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(350.dp)
+                    ) {
+                        items(completeList) {
+                            CompleteProjectRow(it)
+                            Spacer(modifier = Modifier.height(10.dp))
+                        }
+
+                    }
+                    DefaultButton(label = "تقديم بلاغ") {
+                        report.value = true
                     }
 
                 }
-                DefaultButton(label = "تقديم بلاغ") {
-                    // nav to Report
-                    navController.navigate(AllScreens.ReportScreen.name + "/${true}/client")
-                }
-
-            }
-        } else if (loading && !exception) {
-            CircleProgress()
-        } else if (exception) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                IconButton(onClick = {
-                    exception = false
-                    loading = true
-                    scope.launch {
-                        val getProfile: WrapperClass<GetProfile, Boolean, Exception> =
-                            workerProfileViewModel.getProfile(
-                                userId = workerId,
-                                authorization = Constant.token
-                            )
-                        if (getProfile.data?.status == "fail" || getProfile.data?.status == "error" || getProfile.e != null) {
-                            exception = true
-                            Toast.makeText(
-                                context,
-                                "خطأ في الانترنت",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            if (getProfile.data != null) {
-                                scope.launch {
-                                    getProfileUser.emit(getProfile.data!!.data?.user!!)
-                                    loading = false
-                                    exception = false
+            } else if (loading && !exception) {
+                CircleProgress()
+            } else if (exception) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    IconButton(onClick = {
+                        exception = false
+                        loading = true
+                        scope.launch {
+                            val getProfile: WrapperClass<GetProfile, Boolean, Exception> =
+                                workerProfileViewModel.getProfile(
+                                    userId = workerId,
+                                    authorization = Constant.token
+                                )
+                            if (getProfile.data?.status == "fail" || getProfile.data?.status == "error" || getProfile.e != null) {
+                                exception = true
+                                Toast.makeText(
+                                    context,
+                                    "خطأ في الانترنت",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                if (getProfile.data != null) {
+                                    scope.launch {
+                                        getProfileUser.emit(getProfile.data!!.data?.user!!)
+                                        loading = false
+                                        exception = false
+                                    }
                                 }
                             }
                         }
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Refresh, contentDescription = null,
+                            modifier = Modifier.size(60.dp)
+                        )
                     }
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Refresh, contentDescription = null,
-                        modifier = Modifier.size(60.dp)
-                    )
+                }
+            }
+        } else {
+            Column(modifier = Modifier.fillMaxSize()) {
+                ReportScreen(navController = navController, client = true, status = "client") {
+                    report.value = false
                 }
             }
         }

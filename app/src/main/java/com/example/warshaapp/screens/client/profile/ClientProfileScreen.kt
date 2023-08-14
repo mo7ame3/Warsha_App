@@ -1,6 +1,7 @@
 package com.example.warshaapp.screens.client.profile
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -45,13 +46,16 @@ import com.example.warshaapp.constant.Constant
 import com.example.warshaapp.data.WrapperClass
 import com.example.warshaapp.model.shared.profile.GetProfile
 import com.example.warshaapp.model.shared.user.User
-import com.example.warshaapp.navigation.AllScreens
+import com.example.warshaapp.screens.sharedScreens.report.ReportScreen
 import com.example.warshaapp.ui.theme.MainColor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint(
+    "UnusedMaterial3ScaffoldPaddingParameter", "StateFlowValueCalledInComposition",
+    "CoroutineCreationDuringComposition"
+)
 @Composable
 fun ClientProfileScreen(
     navController: NavController,
@@ -63,6 +67,9 @@ fun ClientProfileScreen(
     }
     val changeCompleteState = remember {
         mutableStateOf(true)
+    }
+    val report = remember {
+        mutableStateOf(false)
     }
 
     //coroutineScope
@@ -105,118 +112,128 @@ fun ClientProfileScreen(
         }
     }
 
-
     Scaffold(topBar = {
         TopBar(title = "") {
             navController.popBackStack()
         }
     }) {
-        if (!loading && !exception) {
-            if (changeCompleteState.value) {
-                isSelect.value = true
-                changeCompleteState.value = false
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 30.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top
-            ) {
-                Row(
+        if (!report.value) {
+            if (!loading && !exception) {
+                if (changeCompleteState.value) {
+                    isSelect.value = true
+                    changeCompleteState.value = false
+                }
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
+                        .fillMaxSize()
+                        .padding(top = 30.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Top
                 ) {
-                    GetSmallPhoto(
-                        isProfile = true,
-                        uri = if (getClientProfile.value[0].avatar != null) getClientProfile.value[0].avatar.toString() else null
-                    )
-                }
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = getClientProfile.value[0].name,
-                    style = TextStyle(
-                        color = MainColor,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                )
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(
-                    text = getClientProfile.value[0].address, style = TextStyle(
-                        color = Color.Gray,
-                        fontSize = 15.sp
-                    )
-                )
-
-                Spacer(modifier = Modifier.height(15.dp))
-                DefaultButton(label = "مشاريع مكتملة") {
-                    isSelect.value = !isSelect.value
-                }
-                Spacer(modifier = Modifier.height(15.dp))
-                if (isSelect.value) {
-                    LazyColumn(
+                    Row(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(400.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
                     ) {
-                        items(Constant.completeList) {
-                            ClientCompleteProjectRow(item = it)
-                            Spacer(modifier = Modifier.height(20.dp))
-                        }
+                        GetSmallPhoto(
+                            isProfile = true,
+                            uri = if (getClientProfile.value[0].avatar != null) getClientProfile.value[0].avatar.toString() else null
+                        )
                     }
-                }
-                if (!isSelect.value) {
-                    Spacer(modifier = Modifier.height(400.dp))
-                }
-                DefaultButton(label = "تقديم بلاغ") {
-                    // nav to Report
-                    navController.navigate(AllScreens.ReportScreen.name + "/${false}/worker")
-                }
-            }
-        } else if (loading && !exception) {
-            CircleProgress()
-        } else if (exception) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                IconButton(onClick = {
-                    exception = false
-                    loading = true
-                    scope.launch {
-                        val getProfile: WrapperClass<GetProfile, Boolean, Exception> =
-                            clientProfileViewModel.getProfile(
-                                userId = clientId,
-                                authorization = Constant.token
-                            )
-                        if (getProfile.data?.status == "fail" || getProfile.data?.status == "error" || getProfile.e != null) {
-                            exception = true
-                            Toast.makeText(
-                                context,
-                                "خطأ في الانترنت",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            if (getProfile.data != null) {
-                                scope.launch {
-                                    getClientProfile.emit(getProfile.data!!.data?.user!!)
-                                    loading = false
-                                    exception = false
-                                }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(
+                        text = getClientProfile.value[0].name,
+                        style = TextStyle(
+                            color = MainColor,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Text(
+                        text = getClientProfile.value[0].address, style = TextStyle(
+                            color = Color.Gray,
+                            fontSize = 15.sp
+                        )
+                    )
+
+                    Spacer(modifier = Modifier.height(15.dp))
+                    DefaultButton(label = "مشاريع مكتملة") {
+                        isSelect.value = !isSelect.value
+                    }
+                    Spacer(modifier = Modifier.height(15.dp))
+                    if (isSelect.value) {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(400.dp)
+                        ) {
+                            items(Constant.completeList) {
+                                ClientCompleteProjectRow(item = it)
+                                Spacer(modifier = Modifier.height(20.dp))
                             }
                         }
                     }
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Refresh, contentDescription = null,
-                        modifier = Modifier.size(60.dp)
-                    )
+                    if (!isSelect.value) {
+                        Spacer(modifier = Modifier.height(400.dp))
+                    }
+                    DefaultButton(label = "تقديم بلاغ") {
+                        Log.d("TAG", "ClientProfileScreen: ")
+                        report.value = true
+                        // nav to Report
+                        // navController.navigate(AllScreens.ReportScreen.name + "/${false}/worker")
+
+                    }
+                }
+            } else if (loading && !exception) {
+                CircleProgress()
+            } else if (exception) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    IconButton(onClick = {
+                        exception = false
+                        loading = true
+                        scope.launch {
+                            val getProfile: WrapperClass<GetProfile, Boolean, Exception> =
+                                clientProfileViewModel.getProfile(
+                                    userId = clientId,
+                                    authorization = Constant.token
+                                )
+                            if (getProfile.data?.status == "fail" || getProfile.data?.status == "error" || getProfile.e != null) {
+                                exception = true
+                                Toast.makeText(
+                                    context,
+                                    "خطأ في الانترنت",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                if (getProfile.data != null) {
+                                    scope.launch {
+                                        getClientProfile.emit(getProfile.data!!.data?.user!!)
+                                        loading = false
+                                        exception = false
+                                    }
+                                }
+                            }
+                        }
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Refresh, contentDescription = null,
+                            modifier = Modifier.size(60.dp)
+                        )
+                    }
+                }
+            }
+        } else {
+            Column(modifier = Modifier.fillMaxSize()) {
+                ReportScreen(navController = navController, client = false, status = "worker") {
+                    report.value = false
                 }
             }
         }
     }
-
 }
+

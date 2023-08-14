@@ -21,7 +21,6 @@ import com.example.warshaapp.screens.client.profile.ClientProfileScreen
 import com.example.warshaapp.screens.client.profile.ClientProfileViewModel
 import com.example.warshaapp.screens.sharedScreens.authentication.login.AuthenticationViewModel
 import com.example.warshaapp.screens.sharedScreens.authentication.login.LoginScreen
-import com.example.warshaapp.screens.sharedScreens.report.ReportScreen
 import com.example.warshaapp.screens.sharedScreens.setting.SettingScreen
 import com.example.warshaapp.screens.sharedScreens.setting.SettingViewModel
 import com.example.warshaapp.screens.sharedScreens.splash.SplashScreen
@@ -40,8 +39,7 @@ import com.example.warshaapp.screens.worker.profile.WorkerProfileViewModel
 fun NavGraph() {
     val navController = rememberNavController()
     NavHost(
-        navController = navController,
-        startDestination = AllScreens.SplashScreen.name
+        navController = navController, startDestination = AllScreens.SplashScreen.name
     ) {
 
         composable(route = AllScreens.SplashScreen.name) {
@@ -50,26 +48,10 @@ fun NavGraph() {
         composable(route = AllScreens.LoginScreen.name) {
             val authenticationViewModel = hiltViewModel<AuthenticationViewModel>()
             LoginScreen(
-                navController = navController,
-                authenticationViewModel = authenticationViewModel
+                navController = navController, authenticationViewModel = authenticationViewModel
             )
         }
 
-        //Report Screen
-        composable(
-            route = AllScreens.ReportScreen.name + "/{client}/{status}",
-            arguments = listOf(navArgument(name = "client") {
-                type = NavType.BoolType
-            }, navArgument(name = "status") {
-                type = NavType.StringType
-            })
-        ) { data ->
-            ReportScreen(
-                navController = navController,
-                client = data.arguments!!.getBoolean("client"),
-                status = data.arguments!!.getString("status").toString()
-            )
-        }
 
         //Client
 
@@ -78,8 +60,7 @@ fun NavGraph() {
             route = AllScreens.ClientHomeScreen.name + "/{route}",
             arguments = listOf(navArgument(name = "route") {
                 type = NavType.StringType
-            }
-            )
+            })
         ) { data ->
             val clientHomeViewModel = hiltViewModel<ClientHomeViewModel>()
             val orderViewModel = hiltViewModel<OrderViewModel>()
@@ -95,8 +76,7 @@ fun NavGraph() {
 
         //Post Order
         composable(
-            route = AllScreens.ClientPostScreen.name + "/{craftId}/{craftName}",
-            arguments = listOf(
+            route = AllScreens.ClientPostScreen.name + "/{craftId}/{craftName}", arguments = listOf(
                 navArgument(name = "craftId") {
                     type = NavType.StringType
                 },
@@ -135,21 +115,18 @@ fun NavGraph() {
         }
 
         //OrderOffers
-        composable(route = AllScreens.ClientOrderOffersScreen.name + "/{problemTitle}/{orderDescription}/{orderId}/{craftId}",
-            arguments = listOf(
-                navArgument(name = "problemTitle") {
-                    type = NavType.StringType
-                },
-                navArgument(name = "orderDescription") {
-                    type = NavType.StringType
-                },
-                navArgument(name = "orderId") {
-                    type = NavType.StringType
-                },
-                navArgument(name = "craftId") {
-                    type = NavType.StringType
-                }
-            )) { data ->
+        composable(
+            route = AllScreens.ClientOrderOffersScreen.name + "/{problemTitle}/{orderDescription}/{orderId}/{craftId}",
+            arguments = listOf(navArgument(name = "problemTitle") {
+                type = NavType.StringType
+            }, navArgument(name = "orderDescription") {
+                type = NavType.StringType
+            }, navArgument(name = "orderId") {
+                type = NavType.StringType
+            }, navArgument(name = "craftId") {
+                type = NavType.StringType
+            })
+        ) { data ->
             val orderViewModel = hiltViewModel<OrderViewModel>()
             ClientOrderOffersScreen(
                 navController = navController,
@@ -177,14 +154,12 @@ fun NavGraph() {
         }
 
         composable(
-            route = AllScreens.ClientProfileScreen.name + "/{clientId}",
-            arguments = listOf(
+            route = AllScreens.ClientProfileScreen.name + "/{clientId}", arguments = listOf(
                 navArgument(name = "clientId") {
                     type = NavType.StringType
                 },
             )
-        )
-        {
+        ) {
             val clientProfileViewModel = hiltViewModel<ClientProfileViewModel>()
             ClientProfileScreen(
                 navController = navController,
@@ -231,16 +206,16 @@ fun NavGraph() {
         composable(route = AllScreens.WorkerMyProfileScreen.name) {
             val workerProfileViewModel = hiltViewModel<WorkerProfileViewModel>()
             WorkerMyProfileScreen(
-                navController = navController,
-                workerProfileViewModel = workerProfileViewModel
+                navController = navController, workerProfileViewModel = workerProfileViewModel
             )
         }
 
-        composable(route = AllScreens.WorkerProfileScreen.name + "/{workerId}", arguments = listOf(
-            navArgument(name = "workerId") {
+        composable(
+            route = AllScreens.WorkerProfileScreen.name + "/{workerId}",
+            arguments = listOf(navArgument(name = "workerId") {
                 type = NavType.StringType
-            }
-        )) {
+            })
+        ) {
             val workerProfileViewModel = hiltViewModel<WorkerProfileViewModel>()
             WorkerProfileScreen(
                 navController = navController,
@@ -249,12 +224,12 @@ fun NavGraph() {
             )
         }
 
-        composable(route = AllScreens.MyProjectProblemDetails.name + "/{orderId}",
-            arguments = listOf(
-                navArgument(name = "orderId") {
-                    type = NavType.StringType
-                }
-            )) {
+        composable(
+            route = AllScreens.MyProjectProblemDetails.name + "/{orderId}",
+            arguments = listOf(navArgument(name = "orderId") {
+                type = NavType.StringType
+            })
+        ) {
             val myOffersViewModel = hiltViewModel<MyOffersViewModel>()
             MyOfferProblemDetails(
                 navController = navController,
@@ -263,16 +238,18 @@ fun NavGraph() {
             )
         }
 
-        composable(route = AllScreens.WorkerProblemDetails.name + "/{orderId}", arguments = listOf(
-            navArgument(name = "orderId") {
+        composable(
+            route = AllScreens.WorkerProblemDetails.name + "/{orderId}",
+            arguments = listOf(navArgument(name = "orderId") {
                 type = NavType.StringType
-            }
-        )) {
+            })
+        ) {
             val viewModel = hiltViewModel<WorkerProblemDetailsViewModel>()
 
             WorkerProblemDetails(
-                navController = navController, orderID = it.arguments?.getString("orderId")
-                    .toString(), workerProblemDetailsViewModel = viewModel
+                navController = navController,
+                orderID = it.arguments?.getString("orderId").toString(),
+                workerProblemDetailsViewModel = viewModel
             )
         }
 
