@@ -9,6 +9,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.warshaapp.screens.admin.home.AdminHomeScreen
+import com.example.warshaapp.screens.admin.query.blocks.AdminBlockedUsers
+import com.example.warshaapp.screens.admin.query.clients.AdminAllClients
 import com.example.warshaapp.screens.client.home.ClientHomeScreen
 import com.example.warshaapp.screens.client.home.ClientHomeViewModel
 import com.example.warshaapp.screens.client.order.OrderViewModel
@@ -251,6 +254,22 @@ fun NavGraph() {
                 orderID = it.arguments?.getString("orderId").toString(),
                 workerProblemDetailsViewModel = viewModel
             )
+        }
+
+
+        //Admin Screen
+
+
+        composable(route = AllScreens.AdminHomeScreen.name) {
+            AdminHomeScreen(navController = navController)
+        }
+
+        composable(route = AllScreens.AdminBlockedUsers.name) {
+            AdminBlockedUsers(navController)
+        }
+
+        composable(route = AllScreens.AdminAllClients.name) {
+            AdminAllClients(navController)
         }
 
     }
