@@ -57,7 +57,7 @@ fun AdminHomeScreen(navController: NavController) {
                     QueryRow(title = it) { query ->
                         when (query) {
                             "المهن" -> {
-                                navController.navigate(route = AllScreens.AdminJobsScreen.name)
+                                navController.navigate(route = AllScreens.AdminCraftsScreen.name)
                             }
 
                             "العمال" -> {
@@ -69,7 +69,7 @@ fun AdminHomeScreen(navController: NavController) {
                             }
 
                             "الحظر" -> {
-                                navController.navigate(route = AllScreens.AdminBlockedUsers.name)
+                                // navController.navigate(route = AllScreens.AdminBlockedUsers.name)
                             }
                         }
                     }

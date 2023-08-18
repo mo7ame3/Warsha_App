@@ -33,7 +33,7 @@ enum class AllScreens {
     //Admin
 
     AdminHomeScreen,
-    AdminJobsScreen,
+    AdminCraftsScreen,
     AdminEditJobsScreen,
     AdminAllWorkersInSpecificJob,
     AdminAllWorkers,

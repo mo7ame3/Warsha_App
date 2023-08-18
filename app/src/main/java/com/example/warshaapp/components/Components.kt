@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
@@ -674,6 +675,24 @@ fun CompleteMyProjectRow(
                     )
                 )
 
+            }
+        }
+    }
+}
+
+@Composable
+fun FloatingAction(onAction: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End
+    ) {
+        Surface(
+            shape = CircleShape,
+            color = MainColor,
+            modifier = Modifier.size(50.dp)
+        ) {
+            IconButton(onClick = { onAction.invoke() }) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = null)
             }
         }
     }
