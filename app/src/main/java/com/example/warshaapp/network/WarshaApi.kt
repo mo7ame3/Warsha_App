@@ -1,6 +1,8 @@
 package com.example.warshaapp.network
 
 import com.example.warshaapp.constant.Constant
+import com.example.warshaapp.model.admin.createNewCraft.CreateNewCraft
+import com.example.warshaapp.model.admin.updateCraft.UpdateCraft
 import com.example.warshaapp.model.client.createOrder.CreateOrder
 import com.example.warshaapp.model.client.getMyOrder.GetMyOrder
 import com.example.warshaapp.model.client.offerOfAnOrder.GetOfferOfAnOrder
@@ -195,5 +197,33 @@ interface WarshaApi {
         @Path("orderId") orderId: String,
         @Body offerBody: Map<String, String>
     ): CreateOffer
+
+
+    //admin
+    //create craft
+    @Multipart
+    @POST(Constant.CRAFT)
+    suspend fun adminCreateCraft(
+        @Header("Authorization") authorization: String,
+        @Part("name") name: RequestBody,
+        @Part image: MultipartBody.Part
+    ): CreateNewCraft
+
+    //updateCraft
+    @Multipart
+    @PATCH(Constant.CRAFT + "/{craftID}")
+    suspend fun updateCraft(
+        @Path("craftID") craftId: String,
+        @Header("Authorization") authorization: String,
+        @Part image: MultipartBody.Part? = null,
+        @Part("name") name: RequestBody? = null,
+    ): UpdateCraft
+
+    //deleteCraft
+    @DELETE(Constant.CRAFT + "/{craftID}")
+    suspend fun deleteCraft(
+        @Path("craftID") craftId: String,
+        @Header("Authorization") authorization: String,
+    ): Delete
 
 }
