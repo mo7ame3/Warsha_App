@@ -131,9 +131,9 @@ fun AdminCraftsScreen(
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(items = craftFromGetAllCraftList.value) {
                         JobRow(craftFromGetAllCraft = it, onEditAction = { edit ->
-                            navController.navigate(AllScreens.AdminEditJobsScreen.name + "/${edit}")
+                            navController.navigate(AllScreens.AdminEditCraftsScreen.name + "/${edit}")
                         }, onClick = { craftQuery ->
-                            navController.navigate(route = AllScreens.AdminAllWorkersInSpecificJob.name + "/${craftQuery.id}")
+                            navController.navigate(route = AllScreens.AdminAllWorkersInSpecificCraft.name + "/${craftQuery.id}")
 
                         })
                     }

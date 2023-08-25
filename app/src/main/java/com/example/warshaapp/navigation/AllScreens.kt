@@ -34,8 +34,8 @@ enum class AllScreens {
 
     AdminHomeScreen,
     AdminCraftsScreen,
-    AdminEditJobsScreen,
-    AdminAllWorkersInSpecificJob,
+    AdminEditCraftsScreen,
+    AdminAllWorkersInSpecificCraft,
     AdminAllWorkers,
     AdminAllClients,
     AdminBlockedUsers,

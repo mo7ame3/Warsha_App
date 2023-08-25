@@ -12,6 +12,7 @@ import com.example.warshaapp.model.shared.authentication.AuthenticationCraft
 import com.example.warshaapp.model.shared.authentication.AuthenticationCraftList
 import com.example.warshaapp.model.shared.delete.Delete
 import com.example.warshaapp.model.shared.getAllCrafts.GetAllCrafts
+import com.example.warshaapp.model.shared.getCraft.GetCraft
 import com.example.warshaapp.model.shared.getCraftOfWorker.GetCraftOfWorker
 import com.example.warshaapp.model.shared.profile.GetProfile
 import com.example.warshaapp.model.shared.updateOffer.UpdateOffer
@@ -61,6 +62,13 @@ interface WarshaApi {
     @GET(Constant.CRAFT_LIST)
     suspend fun getCraftList(): AuthenticationCraftList
 
+    //Get Craft
+
+    @GET(Constant.CRAFT + "/{craftId}")
+    suspend fun getCraft(
+        @Path("craftId") craftId: String,
+        @Header("Authorization") authorization: String
+    ): GetCraft
 
     @PATCH(Constant.UPDATE_PASSWORD)
     suspend fun updatePassword(

@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.warshaapp.data.WrapperClass
 import com.example.warshaapp.model.shared.authentication.AuthenticationCraftList
 import com.example.warshaapp.model.shared.getAllCrafts.GetAllCrafts
+import com.example.warshaapp.model.shared.getCraft.GetCraft
 import com.example.warshaapp.model.shared.getCraftOfWorker.GetCraftOfWorker
 import com.example.warshaapp.model.shared.profile.GetProfile
 import com.example.warshaapp.model.shared.updateOffer.UpdateOffer
@@ -24,6 +25,7 @@ class SharedRepository @Inject constructor(private val api: WarshaApi) {
     private val updateProfilePhoto = WrapperClass<UpdateProfile, Boolean, Exception>()
     private val updateProfileData = WrapperClass<UpdateProfile, Boolean, Exception>()
     private val updatePassword = WrapperClass<UpdatePassword, Boolean, Exception>()
+    private val getOneCrafts = WrapperClass<GetCraft, Boolean, Exception>()
 
 
     suspend fun getCraftList()
@@ -202,6 +204,27 @@ class SharedRepository @Inject constructor(private val api: WarshaApi) {
             updatePassword.e = e
         }
         return updatePassword
+    }
+
+    suspend fun getOneCraft(authorization: String, craftId: String)
+            : WrapperClass<GetCraft, Boolean, Exception> {
+        try {
+            getOneCrafts.data = api.getCraft(authorization = authorization, craftId = craftId)
+        } catch (e: HttpException) {
+            val error = e.response()?.errorBody()?.string()
+            val status = error!!.split("status")[1].split(":")[1].split("\"")[1]
+            val message = error.split("message")[1].split("\":")[1]
+            getOneCrafts.data = GetCraft(status = status, message = message)
+
+        } catch (e: Exception) {
+            Log.d("TAG", "getOneCraft: $e")
+            getOneCrafts.e = e
+        } catch (e: SocketTimeoutException) {
+            Log.d("TAG", "getOneCraft: $e")
+            getOneCrafts.e = e
+
+        }
+        return getOneCrafts
     }
 
 }

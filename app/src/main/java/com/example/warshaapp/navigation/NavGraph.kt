@@ -14,6 +14,11 @@ import com.example.warshaapp.screens.admin.query.blocks.AdminBlockedUsers
 import com.example.warshaapp.screens.admin.query.clients.AdminAllClients
 import com.example.warshaapp.screens.admin.query.crafts.AdminCraftsScreen
 import com.example.warshaapp.screens.admin.query.crafts.CraftsViewModel
+import com.example.warshaapp.screens.admin.query.crafts.allWorkers.AdminAllWorkersInSpecificCraft
+import com.example.warshaapp.screens.admin.query.crafts.createCraft.AdminCreateNewCraft
+import com.example.warshaapp.screens.admin.query.crafts.createCraft.CreateNewCraftViewModel
+import com.example.warshaapp.screens.admin.query.crafts.edit.AdminEditCraftScreen
+import com.example.warshaapp.screens.admin.query.crafts.edit.AdminEditCraftViewModel
 import com.example.warshaapp.screens.admin.query.workers.AdminAllWorkers
 import com.example.warshaapp.screens.client.home.ClientHomeScreen
 import com.example.warshaapp.screens.client.home.ClientHomeViewModel
@@ -281,6 +286,35 @@ fun NavGraph() {
         composable(route = AllScreens.AdminCraftsScreen.name) {
             val viewModel = hiltViewModel<CraftsViewModel>()
             AdminCraftsScreen(navController = navController, viewModel)
+        }
+
+        composable(
+            route = AllScreens.AdminEditCraftsScreen.name + "/{craftId}",
+            arguments = listOf(navArgument(name = "craftId") {
+                type = NavType.StringType
+            })
+        ) { data ->
+            val viewModel = hiltViewModel<AdminEditCraftViewModel>()
+            AdminEditCraftScreen(
+                navController = navController,
+                craftId = data.arguments?.getString("craftId")!!,
+                viewModel
+            )
+        }
+
+        composable(
+            route = AllScreens.AdminCreateNewCraft.name
+        ) {
+            val createNewCraftViewModel = hiltViewModel<CreateNewCraftViewModel>()
+            AdminCreateNewCraft(
+                navController = navController,
+                createNewCraftViewModel = createNewCraftViewModel
+            )
+        }
+        composable(
+            route = AllScreens.AdminAllWorkersInSpecificCraft.name
+        ) {
+            AdminAllWorkersInSpecificCraft(navController = navController)
         }
 
     }
